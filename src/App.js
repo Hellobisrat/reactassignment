@@ -1,6 +1,8 @@
 
 import './App.css';
 import { useState } from 'react';
+import PlayerList from './PlayerList';
+import AddPlayer from './AddPlayer';
 
 function App() {
 
@@ -11,29 +13,24 @@ function App() {
   }
   const handleClick =(event)=>{
     event.preventDefault();
-    let templist =playerList
-    templist.push(newPlayer)
-    setPlayerList(templist)
+    let templist ={
+        id: Math.random()*10,
+        player: newPlayer
+    }
+   
+    setPlayerList(oldList=>[...oldList,templist]);
     setNewPlayer('')
   }
-  const handleDelete=(player)=>{
-    const newplaylist=playerList.filter(players=>players!==player)
+  const handleDelete=(id)=>{
+    const newplaylist=playerList.filter(player=>player.id!==id)
     setPlayerList(newplaylist)
     setNewPlayer('')
   }
   return (
     <div className="App">
-      <h1>Exercise-B</h1>
-      <input type='text ' placeholder='Add Player' onChange={handleChange}></input>
-      <button onClick={handleClick}>Add player</button>
-      {
-        playerList.map((player)=>{
-          return (
-            <h3 key={player}> {player}<button onClick={()=>handleDelete(player)}>Delete</button></h3>
-          )
-
-        })
-      }
+      <AddPlayer handleChange={handleChange} handleClick={handleClick}/>
+      <PlayerList playerList={playerList} handleDelete={handleDelete}/>
+      
      
     </div>
   );
